@@ -16,7 +16,6 @@
       --warn:#ffcc66;
       --shadow: 0 16px 60px rgba(0,0,0,0.45);
 
-      /* theme surfaces (default = dark) */
       --surface: rgba(15,23,42,0.86);
       --surface2: rgba(255,255,255,0.03);
       --surface3: rgba(11,19,36,0.55);
@@ -148,22 +147,13 @@
       border-radius:999px;
       transition: width .25s ease;
     }
-    .miniMeters{
-      display:grid;
-      gap:8px;
-    }
+    .miniMeters{display:grid; gap:8px;}
     .miniRow{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      color:var(--muted);
-      font-size:12px;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px; color:var(--muted); font-size:12px;
     }
     .miniBar{
-      flex:1;
-      height:8px;
-      border-radius:999px;
+      flex:1; height:8px; border-radius:999px;
       border:1px solid rgba(255,255,255,0.12);
       background:rgba(255,255,255,0.06);
       overflow:hidden;
@@ -211,9 +201,7 @@
       color:var(--muted);
       white-space:nowrap;
     }
-    body[data-theme="light"] .tag{
-      background: rgba(10,16,32,0.04);
-    }
+    body[data-theme="light"] .tag{background: rgba(10,16,32,0.04);}
     .tag.warn{color:var(--warn); border-color:rgba(255,204,102,0.35);}
     .tag.good{color:var(--accent2); border-color:rgba(34,197,94,0.35);}
 
@@ -247,11 +235,7 @@
       accent-color: var(--accent);
       flex: 0 0 auto;
     }
-    .stepName{
-      font-weight:700;
-      font-size:14px;
-      margin:0;
-    }
+    .stepName{font-weight:700; font-size:14px; margin:0;}
     .stepSub{
       margin:3px 0 0;
       color:var(--muted);
@@ -301,11 +285,40 @@
       transition:.15s ease;
       white-space:nowrap;
     }
-    body[data-theme="light"] .mapBtn{ color: var(--text); }
     .mapBtn:hover{transform:translateY(-1px); background:rgba(77,163,255,0.18);}
     .mapBtn.disabled{opacity:0.55; pointer-events:none;}
 
-    /* Right side settings */
+    /* Right side collapsible */
+    details.panel{
+      border:1px solid var(--border);
+      border-radius:18px;
+      background:var(--surface2);
+      overflow:hidden;
+      margin-top:10px;
+    }
+    summary.panelSummary{
+      list-style:none;
+      cursor:pointer;
+      padding:12px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      user-select:none;
+    }
+    summary.panelSummary::-webkit-details-marker{display:none;}
+    .panelTitle{
+      font-weight:700;
+      font-size:13.5px;
+    }
+    .panelHint{
+      color:var(--muted);
+      font-size:12px;
+      margin-top:2px;
+    }
+    .panelBody{ padding:0 14px 14px; }
+
+    /* Right side inputs */
     .field{display:grid; gap:6px; margin-top:10px;}
     .field label{font-size:12.5px; color:var(--muted);}
     .field input, .field select{
@@ -325,7 +338,6 @@
       border-color:rgba(77,163,255,0.45);
       box-shadow:0 0 0 4px rgba(77,163,255,0.08);
     }
-
     .two{display:grid; grid-template-columns: 1fr 1fr; gap:12px;}
     @media(max-width:520px){ .two{grid-template-columns:1fr;} }
 
@@ -342,7 +354,6 @@
 
     footer{margin-top:14px; text-align:center; color:var(--muted); font-size:12px;}
 
-    /* Print */
     @media print{
       body{background:white; color:black;}
       header, .card{box-shadow:none;}
@@ -635,78 +646,102 @@
             </div>
           </div>
         </details>
-
       </section>
 
-      <!-- RIGHT: SETTINGS -->
+      <!-- RIGHT -->
       <aside class="card">
-        <h2>⚙️ Edit Your Places (Any Student Can Use)</h2>
-        <p class="muted">Change your starting address and locations. All map buttons update automatically.</p>
+        <h2>✅ Quick Controls</h2>
+        <p class="muted">Keep this panel collapsed for a clean look.</p>
 
-        <div class="field">
-          <label>Starting Address</label>
-          <input id="start" placeholder="Example: Mladinska ulica 7, 2000 Maribor"/>
-        </div>
+        <!-- Collapsible Locations Panel -->
+        <details class="panel" id="locationsPanel" open>
+          <summary class="panelSummary">
+            <div>
+              <div class="panelTitle">📍 Edit Places & Address</div>
+              <div class="panelHint">Click to expand/collapse</div>
+            </div>
+            <span class="tag">⚙️</span>
+          </summary>
 
-        <div class="two">
-          <div class="field">
-            <label>Travel Mode</label>
-            <select id="mode">
-              <option value="walking">Walking</option>
-              <option value="transit">Public Transport</option>
-              <option value="driving">Driving</option>
-            </select>
+          <div class="panelBody">
+            <div class="field">
+              <label>Starting Address</label>
+              <input id="start" placeholder="Example: Mladinska ulica 7, 2000 Maribor"/>
+            </div>
+
+            <div class="two">
+              <div class="field">
+                <label>Travel Mode</label>
+                <select id="mode">
+                  <option value="walking">Walking</option>
+                  <option value="transit">Public Transport</option>
+                  <option value="driving">Driving</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label>Preset</label>
+                <select id="preset">
+                  <option value="maribor">Maribor</option>
+                  <option value="custom">Custom</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Upravna Enota (Foreigners Office)</label>
+              <input id="ue"/>
+            </div>
+
+            <div class="field">
+              <label>University International Office</label>
+              <input id="uni"/>
+            </div>
+
+            <div class="field">
+              <label>FURS (Tax Office)</label>
+              <input id="furs"/>
+            </div>
+
+            <div class="field">
+              <label>ZZZS (Health Insurance Office)</label>
+              <input id="zzzs"/>
+            </div>
+
+            <div class="field">
+              <label>Študentski servis (Student Work Service)</label>
+              <input id="work"/>
+            </div>
+
+            <div class="field">
+              <label>Bus Card Location (Optional)</label>
+              <input id="bus" placeholder="Example: Marprom ticket office Maribor"/>
+            </div>
+
+            <div class="actions" style="margin-top:10px;">
+              <button class="btn primary" onclick="apply()">✅ Update</button>
+              <button class="btn" onclick="fillMaribor()">⭐ Maribor Preset</button>
+            </div>
           </div>
+        </details>
 
-          <div class="field">
-            <label>Preset</label>
-            <select id="preset">
-              <option value="maribor">Maribor</option>
-              <option value="custom">Custom</option>
-            </select>
+        <!-- Collapsible Tips Panel -->
+        <details class="panel" style="margin-top:12px;">
+          <summary class="panelSummary">
+            <div>
+              <div class="panelTitle">💡 Tips</div>
+              <div class="panelHint">Smart suggestions for students</div>
+            </div>
+            <span class="tag">✨</span>
+          </summary>
+          <div class="panelBody">
+            <div class="helpBox">
+              ✅ Mobile Tip: Keep Days collapsed and expand only the day you are doing today.<br/>
+              🔒 Checklist saves automatically in your browser.<br/>
+              🌙 Use the theme button for Dark/Light mode.
+            </div>
           </div>
-        </div>
-
-        <div class="field">
-          <label>Upravna Enota (Foreigners Office)</label>
-          <input id="ue"/>
-        </div>
-
-        <div class="field">
-          <label>University International Office</label>
-          <input id="uni"/>
-        </div>
-
-        <div class="field">
-          <label>FURS (Tax Office)</label>
-          <input id="furs"/>
-        </div>
-
-        <div class="field">
-          <label>ZZZS (Health Insurance Office)</label>
-          <input id="zzzs"/>
-        </div>
-
-        <div class="field">
-          <label>Študentski servis (Student Work Service)</label>
-          <input id="work"/>
-        </div>
-
-        <div class="field">
-          <label>Bus Card Location (Optional)</label>
-          <input id="bus" placeholder="Example: Marprom ticket office Maribor"/>
-        </div>
-
-        <div class="actions" style="margin-top:10px;">
-          <button class="btn primary" onclick="apply()">✅ Update</button>
-          <button class="btn" onclick="fillMaribor()">⭐ Maribor Preset</button>
-        </div>
-
-        <div class="helpBox">
-          ✅ Mobile Tip: Keep Days collapsed and expand only the day you are doing today.<br/>
-          🔒 Checklist saves automatically in your browser.<br/>
-          🌙 Use the theme button for Dark/Light mode.
-        </div>
+        </details>
       </aside>
 
     </div>
@@ -875,13 +910,12 @@
     function expandAll(){ ["day1","day2","day3"].forEach(id => $(id).open = true); }
     function collapseAll(){ ["day1","day2","day3"].forEach(id => $(id).open = false); }
 
-    // Theme toggle (Dark/Light)
+    // Theme toggle
     function setTheme(theme){
       document.body.setAttribute("data-theme", theme);
       localStorage.setItem("jj_theme", theme);
       const btn = $("themeBtn");
-      if(theme === "light") btn.textContent = "☀️ Light";
-      else btn.textContent = "🌙 Dark";
+      btn.textContent = theme === "light" ? "☀️ Light" : "🌙 Dark";
     }
     function toggleTheme(){
       const current = document.body.getAttribute("data-theme") || "dark";

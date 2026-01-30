@@ -8,8 +8,6 @@
   <style>
     :root{
       --bg:#070b14;
-      --card:#0f172a;
-      --card2:#0b1324;
       --text:#eaf2ff;
       --muted:#9fb0cf;
       --border:rgba(255,255,255,0.10);
@@ -17,6 +15,26 @@
       --accent2:#22c55e;
       --warn:#ffcc66;
       --shadow: 0 16px 60px rgba(0,0,0,0.45);
+
+      /* theme surfaces (default = dark) */
+      --surface: rgba(15,23,42,0.86);
+      --surface2: rgba(255,255,255,0.03);
+      --surface3: rgba(11,19,36,0.55);
+      --btnbg: rgba(255,255,255,0.05);
+    }
+
+    /* Light Theme */
+    body[data-theme="light"]{
+      --bg:#f7f9ff;
+      --text:#0a1020;
+      --muted:#465a80;
+      --border:rgba(10,16,32,0.14);
+      --shadow: 0 16px 45px rgba(0,0,0,0.10);
+
+      --surface: rgba(255,255,255,0.92);
+      --surface2: rgba(10,16,32,0.03);
+      --surface3: rgba(10,16,32,0.04);
+      --btnbg: rgba(10,16,32,0.04);
     }
 
     *{box-sizing:border-box}
@@ -30,12 +48,19 @@
         var(--bg);
     }
 
+    body[data-theme="light"]{
+      background:
+        radial-gradient(900px 500px at 12% 0%, rgba(77,163,255,0.14), transparent 60%),
+        radial-gradient(900px 500px at 88% 10%, rgba(34,197,94,0.10), transparent 60%),
+        var(--bg);
+    }
+
     .wrap{max-width:1200px; margin:0 auto; padding:20px 12px 60px;}
     header{
       display:flex; justify-content:space-between; align-items:flex-start;
       gap:14px; flex-wrap:wrap;
       padding:16px;
-      background:rgba(15,23,42,0.82);
+      background:var(--surface);
       border:1px solid var(--border);
       border-radius:18px;
       box-shadow: var(--shadow);
@@ -51,12 +76,16 @@
       padding:10px 12px;
       border-radius:12px;
       border:1px solid var(--border);
-      background:rgba(255,255,255,0.05);
+      background:var(--btnbg);
       color:var(--text);
       font-size:13px;
       transition:.15s ease;
     }
-    .btn:hover{transform:translateY(-1px); background:rgba(77,163,255,0.12); border-color:rgba(77,163,255,0.25);}
+    .btn:hover{
+      transform:translateY(-1px);
+      background:rgba(77,163,255,0.12);
+      border-color:rgba(77,163,255,0.25);
+    }
     .btn.primary{background:rgba(77,163,255,0.16); border-color:rgba(77,163,255,0.35);}
 
     .grid{
@@ -73,7 +102,7 @@
     }
 
     .card{
-      background:rgba(15,23,42,0.86);
+      background:var(--surface);
       border:1px solid var(--border);
       border-radius:18px;
       padding:15px;
@@ -90,7 +119,7 @@
       padding:12px;
       border-radius:16px;
       border:1px solid var(--border);
-      background:rgba(255,255,255,0.03);
+      background:var(--surface2);
     }
     .progressTop{
       display:flex;
@@ -107,6 +136,10 @@
       border:1px solid rgba(255,255,255,0.12);
       background:rgba(255,255,255,0.06);
       overflow:hidden;
+    }
+    body[data-theme="light"] .meter{
+      border-color: rgba(10,16,32,0.16);
+      background: rgba(10,16,32,0.06);
     }
     .meter > div{
       height:100%;
@@ -135,6 +168,10 @@
       background:rgba(255,255,255,0.06);
       overflow:hidden;
     }
+    body[data-theme="light"] .miniBar{
+      border-color: rgba(10,16,32,0.16);
+      background: rgba(10,16,32,0.06);
+    }
     .miniBar > div{
       height:100%;
       width:0%;
@@ -149,7 +186,7 @@
       padding:0;
       border:1px solid var(--border);
       border-radius:18px;
-      background:rgba(255,255,255,0.03);
+      background:var(--surface2);
       overflow:hidden;
     }
     summary.daySummary{
@@ -174,19 +211,20 @@
       color:var(--muted);
       white-space:nowrap;
     }
+    body[data-theme="light"] .tag{
+      background: rgba(10,16,32,0.04);
+    }
     .tag.warn{color:var(--warn); border-color:rgba(255,204,102,0.35);}
     .tag.good{color:var(--accent2); border-color:rgba(34,197,94,0.35);}
 
-    .dayBody{
-      padding: 0 14px 14px;
-    }
+    .dayBody{ padding: 0 14px 14px; }
 
     /* Steps */
     .step{
       margin-top:10px;
       border-radius:16px;
       border:1px solid var(--border);
-      background:rgba(11,19,36,0.55);
+      background:var(--surface3);
       padding:12px;
     }
     .stepHead{
@@ -228,14 +266,15 @@
       border:1px dashed rgba(255,255,255,0.18);
       background:rgba(255,255,255,0.03);
     }
+    body[data-theme="light"] .docs{
+      background: rgba(10,16,32,0.03);
+      border-color: rgba(10,16,32,0.18);
+    }
     .docs b{display:block; font-size:12.5px; margin-bottom:6px;}
     .docs ul{margin:0; padding-left:18px;}
     .docs li{margin:4px 0; color:var(--muted); font-size:12.5px; line-height:1.35;}
 
-    .chipRow{
-      display:flex; gap:8px; flex-wrap:wrap;
-      margin-top:10px;
-    }
+    .chipRow{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;}
     .chip{
       font-size:12px;
       padding:7px 9px;
@@ -245,6 +284,7 @@
       color:var(--muted);
       user-select:none;
     }
+    body[data-theme="light"] .chip{ background: rgba(10,16,32,0.04); }
 
     .mapBtn{
       display:inline-flex;
@@ -261,11 +301,9 @@
       transition:.15s ease;
       white-space:nowrap;
     }
+    body[data-theme="light"] .mapBtn{ color: var(--text); }
     .mapBtn:hover{transform:translateY(-1px); background:rgba(77,163,255,0.18);}
-    .mapBtn.disabled{
-      opacity:0.55;
-      pointer-events:none;
-    }
+    .mapBtn.disabled{opacity:0.55; pointer-events:none;}
 
     /* Right side settings */
     .field{display:grid; gap:6px; margin-top:10px;}
@@ -280,6 +318,9 @@
       outline:none;
       font-size:14px;
     }
+    body[data-theme="light"] .field input, body[data-theme="light"] .field select{
+      background: rgba(10,16,32,0.04);
+    }
     .field input:focus, .field select:focus{
       border-color:rgba(77,163,255,0.45);
       box-shadow:0 0 0 4px rgba(77,163,255,0.08);
@@ -293,7 +334,7 @@
       padding:12px;
       border-radius:16px;
       border:1px solid var(--border);
-      background:rgba(255,255,255,0.03);
+      background:var(--surface2);
       color:var(--muted);
       font-size:12.5px;
       line-height:1.45;
@@ -326,6 +367,7 @@
 
       <div class="actions">
         <button class="btn primary" onclick="window.print()">🖨️ Print</button>
+        <button class="btn" id="themeBtn" onclick="toggleTheme()">🌙 Dark</button>
         <button class="btn" onclick="expandAll()">⬇ Expand All</button>
         <button class="btn" onclick="collapseAll()">⬆ Collapse All</button>
         <button class="btn" onclick="copyShareLink()">🔗 Copy Share Link</button>
@@ -377,7 +419,6 @@
           </summary>
 
           <div class="dayBody">
-            <!-- Step 1 -->
             <div class="step">
               <div class="stepHead">
                 <div class="stepLeft">
@@ -398,9 +439,13 @@
                   <li>Rent agreement / accommodation proof</li>
                 </ul>
               </div>
+
+              <div class="chipRow">
+                <span class="chip">✅ Output: Address registration confirmation</span>
+                <span class="chip">⏱ Best time: morning</span>
+              </div>
             </div>
 
-            <!-- Step 2 -->
             <div class="step">
               <div class="stepHead">
                 <div class="stepLeft">
@@ -426,7 +471,6 @@
               </div>
             </div>
 
-            <!-- Step 3 -->
             <div class="step">
               <div class="stepHead">
                 <div class="stepLeft">
@@ -448,7 +492,6 @@
               </div>
             </div>
 
-            <!-- Step 4 -->
             <div class="step">
               <div class="stepHead">
                 <div class="stepLeft">
@@ -525,7 +568,6 @@
           </summary>
 
           <div class="dayBody">
-
             <div class="step">
               <div class="stepHead">
                 <div class="stepLeft">
@@ -591,7 +633,6 @@
                 </ul>
               </div>
             </div>
-
           </div>
         </details>
 
@@ -663,7 +704,8 @@
 
         <div class="helpBox">
           ✅ Mobile Tip: Keep Days collapsed and expand only the day you are doing today.<br/>
-          🔒 Checklist saves automatically in your browser.
+          🔒 Checklist saves automatically in your browser.<br/>
+          🌙 Use the theme button for Dark/Light mode.
         </div>
       </aside>
 
@@ -767,7 +809,6 @@
       const work = $("work").value.trim();
       const bus = $("bus").value.trim();
 
-      // labels
       $("locUELabel").textContent = ue || "Not set";
       $("locUELabel2").textContent = ue || "Not set";
       $("locUNILabel").textContent = uni || "Not set";
@@ -776,27 +817,17 @@
       $("locWORKLabel").textContent = work || "Not set";
       $("locBUSLabel").textContent = bus ? bus : "Add your bus card office (optional)";
 
-      // buttons
       if(ue){ setBtn($("btnUE"), maps(start, ue, mode)); setBtn($("btnPermit"), maps(start, ue, mode)); }
       else { disableBtn($("btnUE")); disableBtn($("btnPermit")); }
 
-      if(uni){ setBtn($("btnUNI"), maps(start, uni, mode)); }
-      else { disableBtn($("btnUNI")); }
+      if(uni){ setBtn($("btnUNI"), maps(start, uni, mode)); } else { disableBtn($("btnUNI")); }
+      if(furs){ setBtn($("btnFURS"), maps(start, furs, mode)); } else { disableBtn($("btnFURS")); }
+      if(zzzs){ setBtn($("btnZZZS"), maps(start, zzzs, mode)); } else { disableBtn($("btnZZZS")); }
+      if(work){ setBtn($("btnWORK"), maps(start, work, mode)); } else { disableBtn($("btnWORK")); }
 
-      if(furs){ setBtn($("btnFURS"), maps(start, furs, mode)); }
-      else { disableBtn($("btnFURS")); }
-
-      if(zzzs){ setBtn($("btnZZZS"), maps(start, zzzs, mode)); }
-      else { disableBtn($("btnZZZS")); }
-
-      if(work){ setBtn($("btnWORK"), maps(start, work, mode)); }
-      else { disableBtn($("btnWORK")); }
-
-      // Optional bus + train search
       setBtn($("btnBUS"), bus ? maps(start, bus, mode) : searchNearby("bus card office", start));
       setBtn($("btnTrain"), searchNearby("train station", start));
 
-      // Save settings
       localStorage.setItem("jj_start", start);
       localStorage.setItem("jj_mode", mode);
       localStorage.setItem("jj_ue", ue);
@@ -806,7 +837,6 @@
       localStorage.setItem("jj_work", work);
       localStorage.setItem("jj_bus", bus);
 
-      // Update URL share
       const params = new URLSearchParams();
       params.set("start", start);
       params.set("mode", mode);
@@ -842,21 +872,32 @@
       alert("✅ Reset done!");
     }
 
-    function expandAll(){
-      ["day1","day2","day3"].forEach(id => $(id).open = true);
+    function expandAll(){ ["day1","day2","day3"].forEach(id => $(id).open = true); }
+    function collapseAll(){ ["day1","day2","day3"].forEach(id => $(id).open = false); }
+
+    // Theme toggle (Dark/Light)
+    function setTheme(theme){
+      document.body.setAttribute("data-theme", theme);
+      localStorage.setItem("jj_theme", theme);
+      const btn = $("themeBtn");
+      if(theme === "light") btn.textContent = "☀️ Light";
+      else btn.textContent = "🌙 Dark";
     }
-    function collapseAll(){
-      ["day1","day2","day3"].forEach(id => $(id).open = false);
+    function toggleTheme(){
+      const current = document.body.getAttribute("data-theme") || "dark";
+      setTheme(current === "dark" ? "light" : "dark");
     }
 
     // Init
     bindChecks();
 
-    // Load settings from URL or storage
+    const savedTheme = localStorage.getItem("jj_theme") || "dark";
+    setTheme(savedTheme);
+
     const url = new URLSearchParams(location.search);
     $("start").value = url.get("start") || localStorage.getItem("jj_start") || "Mladinska ulica 7, 2000 Maribor";
     $("mode").value = url.get("mode") || localStorage.getItem("jj_mode") || "walking";
-    $("ue").value = url.get("ue") || localStorage.getItem("jj_ue") || "Upravna Enota Maribor, Ulica heroja Stanete 1, 2000 Maribor";
+    $("ue").value = url.get("ue") || localStorage.getItem("jj_ue") || "Upravna Enota Maribor, Ulica heroja Staneta 1, 2000 Maribor";
     $("uni").value = url.get("uni") || localStorage.getItem("jj_uni") || "University of Maribor, Slomškov trg 15, 2000 Maribor";
     $("furs").value = url.get("furs") || localStorage.getItem("jj_furs") || "Finančna uprava RS (FURS), Titova cesta 10, 2000 Maribor";
     $("zzzs").value = url.get("zzzs") || localStorage.getItem("jj_zzzs") || "ZZZS Maribor, Ulica Talcev 9, 2000 Maribor";

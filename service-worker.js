@@ -1,4 +1,5 @@
-const CACHE_NAME = "student-helper-v1";
+const CACHE_NAME = "student-helper-v2";
+
 
 const ASSETS = [
   "./",

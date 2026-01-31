@@ -3,7 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Slovenia Student Arrival – 3 Day Checklist</title>
+  <meta name="theme-color" content="#0b1224"/>
+
+  <title>Slovenia Student Helper – Offline App</title>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- iOS Support -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
   <style>
     :root{
@@ -14,6 +23,7 @@
       --accent:#4da3ff;
       --accent2:#22c55e;
       --warn:#ffcc66;
+      --danger:#ff5f6d;
       --shadow: 0 16px 60px rgba(0,0,0,0.45);
 
       --surface: rgba(15,23,42,0.86);
@@ -52,7 +62,7 @@
         var(--bg);
     }
 
-    .wrap{max-width:1200px; margin:0 auto; padding:20px 12px 60px;}
+    .wrap{max-width:1280px; margin:0 auto; padding:20px 12px 60px;}
     header{
       display:flex; justify-content:space-between; align-items:flex-start;
       gap:14px; flex-wrap:wrap;
@@ -202,6 +212,7 @@
     body[data-theme="light"] .tag{background: rgba(10,16,32,0.04);}
     .tag.warn{color:var(--warn); border-color:rgba(255,204,102,0.35);}
     .tag.good{color:var(--accent2); border-color:rgba(34,197,94,0.35);}
+    .tag.danger{color:var(--danger); border-color:rgba(255,95,109,0.40);}
 
     .dayBody{ padding: 0 14px 14px; }
 
@@ -257,17 +268,6 @@
     .docs li{margin:4px 0; color:var(--muted); font-size:12.5px; line-height:1.35;}
 
     .chipRow{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;}
-    .chip{
-      font-size:12px;
-      padding:7px 9px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      background:rgba(255,255,255,0.04);
-      color:var(--muted);
-      user-select:none;
-    }
-    body[data-theme="light"] .chip{ background: rgba(10,16,32,0.04); }
-
     .mapBtn{
       display:inline-flex;
       align-items:center;
@@ -286,7 +286,6 @@
     .mapBtn:hover{transform:translateY(-1px); background:rgba(77,163,255,0.18);}
     .mapBtn.disabled{opacity:0.55; pointer-events:none;}
 
-    /* Right side collapsible */
     details.panel{
       border:1px solid var(--border);
       border-radius:18px;
@@ -309,10 +308,9 @@
     .panelHint{color:var(--muted); font-size:12px; margin-top:2px;}
     .panelBody{ padding:0 14px 14px; }
 
-    /* Right side inputs */
     .field{display:grid; gap:6px; margin-top:10px;}
     .field label{font-size:12.5px; color:var(--muted);}
-    .field input, .field select{
+    .field input, .field select, .field textarea{
       width:100%;
       padding:11px 12px;
       border-radius:12px;
@@ -322,13 +320,14 @@
       outline:none;
       font-size:14px;
     }
-    body[data-theme="light"] .field input, body[data-theme="light"] .field select{
+    .field textarea{min-height:78px; resize:vertical;}
+
+    body[data-theme="light"] .field input,
+    body[data-theme="light"] .field select,
+    body[data-theme="light"] .field textarea{
       background: rgba(10,16,32,0.04);
     }
-    .field input:focus, .field select:focus{
-      border-color:rgba(77,163,255,0.45);
-      box-shadow:0 0 0 4px rgba(77,163,255,0.08);
-    }
+
     .two{display:grid; grid-template-columns: 1fr 1fr; gap:12px;}
     @media(max-width:520px){ .two{grid-template-columns:1fr;} }
 
@@ -343,7 +342,49 @@
       line-height:1.45;
     }
 
+    .copyBtn{
+      cursor:pointer;
+      border-radius:12px;
+      border:1px solid rgba(34,197,94,0.35);
+      background: rgba(34,197,94,0.12);
+      color: var(--text);
+      padding:10px 12px;
+      font-size:13px;
+      transition:.15s ease;
+    }
+    .copyBtn:hover{transform:translateY(-1px); background: rgba(34,197,94,0.18);}
+
     footer{margin-top:14px; text-align:center; color:var(--muted); font-size:12px;}
+
+    /* Install Banner */
+    .installBar{
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 16px;
+      width: min(920px, calc(100% - 24px));
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 12px;
+      display:none;
+      z-index: 9999;
+      backdrop-filter: blur(10px);
+    }
+    .installInner{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .installText{
+      display:grid;
+      gap:2px;
+    }
+    .installText b{font-size:13px;}
+    .installText span{font-size:12.3px; color:var(--muted);}
   </style>
 </head>
 
@@ -351,10 +392,10 @@
   <div class="wrap">
     <header>
       <div class="brand">
-        <h1>🇸🇮 Slovenia Student Arrival Checklist (3 Days)</h1>
+        <h1>🇸🇮 Slovenia Student Helper (Offline App)</h1>
         <p>
-          Clean day-wise steps with locations, required documents, and Google Maps buttons.
-          This is a universal checklist — just change your address and places.
+          Full student survival website for Slovenia — arrival checklist, documents, places, budget, jobs, food, Wi-Fi,
+          and emergency help. Works offline after first load.
         </p>
         <div class="by">Created by <b>Justin Johnson</b></div>
       </div>
@@ -365,6 +406,7 @@
         <button class="btn" onclick="expandAll()">⬇ Expand All</button>
         <button class="btn" onclick="collapseAll()">⬆ Collapse All</button>
         <button class="btn" onclick="copyShareLink()">🔗 Copy Share Link</button>
+        <button class="btn" id="installBtnTop" style="display:none;">📲 Install App</button>
         <button class="btn" onclick="resetAll()">♻️ Reset</button>
       </div>
     </header>
@@ -373,7 +415,7 @@
 
       <!-- LEFT -->
       <section class="card">
-        <h2>📊 Progress</h2>
+        <h2>📊 Arrival Checklist Progress</h2>
         <p class="muted">Your progress updates automatically when you tick steps.</p>
 
         <div class="progressBox">
@@ -506,6 +548,16 @@
                 </div>
                 <a class="mapBtn" id="btnPermit" target="_blank" rel="noopener">🪪 Open in Maps</a>
               </div>
+
+              <div class="docs">
+                <b>Documents Needed (Common)</b>
+                <ul>
+                  <li>Passport</li>
+                  <li>Proof of accommodation</li>
+                  <li>Student confirmation</li>
+                  <li>Insurance proof</li>
+                </ul>
+              </div>
             </div>
           </div>
         </details>
@@ -552,33 +604,35 @@
                 <div class="stepLeft">
                   <input class="check" type="checkbox" id="s8"/>
                   <div>
-                    <p class="stepName">Step 8: Register in Študentski servis (Student Work Service)</p>
+                    <p class="stepName">Step 8: Register in Študentski servis</p>
                     <p class="stepSub"><b>Location:</b> <span id="locWORKLabel"></span></p>
                   </div>
                 </div>
                 <a class="mapBtn" id="btnWORK" target="_blank" rel="noopener">💼 Open in Maps</a>
               </div>
             </div>
+
           </div>
         </details>
+
       </section>
 
       <!-- RIGHT -->
       <aside class="card">
         <h2>✅ Student Helper Panels</h2>
-        <p class="muted">All extra information is inside neat dropdowns.</p>
+        <p class="muted">Everything you need for student life — organized and offline ready.</p>
 
-        <!-- Locations Panel -->
-        <details class="panel" id="locationsPanel" open>
+        <!-- Locations -->
+        <details class="panel" open>
           <summary class="panelSummary">
             <div>
               <div class="panelTitle">📍 Edit Places & Address</div>
-              <div class="panelHint">Click to expand/collapse</div>
+              <div class="panelHint">Your starting address powers the whole site</div>
             </div>
             <span class="tag">⚙️</span>
           </summary>
-
           <div class="panelBody">
+
             <div class="field">
               <label>Starting Address</label>
               <input id="start" placeholder="Example: Mladinska ulica 7, 2000 Maribor"/>
@@ -624,13 +678,13 @@
             </div>
 
             <div class="field">
-              <label>Študentski servis (Student Work Service)</label>
+              <label>Študentski servis</label>
               <input id="work"/>
             </div>
 
             <div class="field">
               <label>Bus Card Location (Optional)</label>
-              <input id="bus" placeholder="Example: Marprom ticket office Maribor"/>
+              <input id="bus" placeholder="Example: Marprom ticket office"/>
             </div>
 
             <div class="actions" style="margin-top:10px;">
@@ -640,91 +694,70 @@
           </div>
         </details>
 
-        <!-- Cheapest Shops -->
+        <!-- Food -->
         <details class="panel">
           <summary class="panelSummary">
             <div>
-              <div class="panelTitle">🛒 Cheapest Shops</div>
-              <div class="panelHint">Best for student savings</div>
+              <div class="panelTitle">🍽️ Cheap Food Finder</div>
+              <div class="panelHint">Under €5 / €7 near your address</div>
             </div>
-            <span class="tag">€</span>
+            <span class="tag">🍔</span>
           </summary>
           <div class="panelBody">
-            <div class="helpBox" style="margin-top:0;">
-              Best affordable stores: Hofer, Lidl, Eurospin (groceries), DM (toiletries), Pepco/KIK (cheap clothes).
-            </div>
-
             <div class="chipRow">
-              <a class="mapBtn" target="_blank" rel="noopener"
-                 href="https://www.google.com/maps/search/Hofer+near+Maribor">Hofer</a>
-              <a class="mapBtn" target="_blank" rel="noopener"
-                 href="https://www.google.com/maps/search/Lidl+near+Maribor">Lidl</a>
-              <a class="mapBtn" target="_blank" rel="noopener"
-                 href="https://www.google.com/maps/search/Eurospin+near+Maribor">Eurospin</a>
-              <a class="mapBtn" target="_blank" rel="noopener"
-                 href="https://www.google.com/maps/search/dm+drogerie+markt+near+Maribor">DM</a>
-              <a class="mapBtn" target="_blank" rel="noopener"
-                 href="https://www.google.com/maps/search/Pepco+near+Maribor">Pepco</a>
-              <a class="mapBtn" target="_blank" rel="noopener"
-                 href="https://www.google.com/maps/search/KIK+near+Maribor">KIK</a>
+              <a class="mapBtn" id="btnFood5" target="_blank" rel="noopener">🍕 Under €5</a>
+              <a class="mapBtn" id="btnFood7" target="_blank" rel="noopener">🍜 Under €7</a>
+              <a class="mapBtn" id="btnBakeries" target="_blank" rel="noopener">🥐 Bakeries</a>
+              <a class="mapBtn" id="btnCanteen" target="_blank" rel="noopener">🏫 Student Canteen</a>
             </div>
           </div>
         </details>
 
-        <!-- Budget Plan -->
+        <!-- Wifi -->
         <details class="panel">
           <summary class="panelSummary">
             <div>
-              <div class="panelTitle">💶 Student Budget Plan (Monthly)</div>
-              <div class="panelHint">Smart money guide</div>
+              <div class="panelTitle">📶 Free Wi-Fi Spots</div>
+              <div class="panelHint">Study without mobile data</div>
             </div>
-            <span class="tag">📌</span>
+            <span class="tag">Wi-Fi</span>
           </summary>
           <div class="panelBody">
-            <div class="helpBox" style="margin-top:0;">
-              <b>Typical monthly budget (student-friendly):</b><br/><br/>
-              • Rent: €250 – €450<br/>
-              • Food & groceries: €150 – €250<br/>
-              • Transport: €20 – €50<br/>
-              • Mobile / Internet: €10 – €20<br/>
-              • Personal (shopping / hygiene): €30 – €80<br/>
-              • Emergency / Extra: €30 – €100<br/><br/>
-              ✅ <b>Estimated Total:</b> €500 – €900 / month (depends on lifestyle)
+            <div class="chipRow">
+              <a class="mapBtn" id="btnWifi" target="_blank" rel="noopener">📶 Find Wi-Fi</a>
+              <a class="mapBtn" id="btnLibrary" target="_blank" rel="noopener">📚 Libraries</a>
+              <a class="mapBtn" id="btnCafe" target="_blank" rel="noopener">☕ Cafes</a>
             </div>
           </div>
         </details>
 
-        <!-- Emergency Numbers -->
+        <!-- Emergency -->
         <details class="panel">
           <summary class="panelSummary">
             <div>
-              <div class="panelTitle">🚨 Emergency Numbers (Slovenia)</div>
-              <div class="panelHint">Save these numbers</div>
+              <div class="panelTitle">🚨 Emergency Numbers</div>
+              <div class="panelHint">112 / 113 (Slovenia)</div>
             </div>
             <span class="tag">SOS</span>
           </summary>
           <div class="panelBody">
             <div class="helpBox" style="margin-top:0;">
               ✅ <b>112</b> – Ambulance / Fire / Emergency Help<br/>
-              ✅ <b>113</b> – Police<br/><br/>
-              Tip: If you don’t know Slovenian, speak slowly in English. Tell your location clearly.
+              ✅ <b>113</b> – Police
             </div>
           </div>
         </details>
 
-        <!-- Nearby Hospital & Pharmacy -->
+        <!-- Hospitals -->
         <details class="panel">
           <summary class="panelSummary">
             <div>
               <div class="panelTitle">🏥 Nearby Hospital / Pharmacy</div>
-              <div class="panelHint">Search near your starting address</div>
+              <div class="panelHint">Near your starting address</div>
             </div>
             <span class="tag">+</span>
           </summary>
           <div class="panelBody">
-            <div class="helpBox" style="margin-top:0;">
-              These buttons will search near your saved <b>Starting Address</b>.
-            </div>
             <div class="chipRow">
               <a class="mapBtn" id="btnHosp" target="_blank" rel="noopener">🏥 Hospitals</a>
               <a class="mapBtn" id="btnPharm" target="_blank" rel="noopener">💊 Pharmacies</a>
@@ -732,69 +765,47 @@
           </div>
         </details>
 
-        <!-- SIM Options -->
+        <!-- Planner -->
         <details class="panel">
           <summary class="panelSummary">
             <div>
-              <div class="panelTitle">📶 Fastest SIM Card Options</div>
-              <div class="panelHint">Best networks for students</div>
+              <div class="panelTitle">📅 Monthly Planner (Saved)</div>
+              <div class="panelHint">Works offline</div>
             </div>
-            <span class="tag">SIM</span>
+            <span class="tag">Plan</span>
           </summary>
           <div class="panelBody">
-            <div class="helpBox" style="margin-top:0;">
-              ✅ Popular SIM providers in Slovenia:<br/><br/>
-              • <b>A1</b> – strong coverage + fast internet<br/>
-              • <b>Telekom Slovenije</b> – reliable, wide coverage<br/>
-              • <b>Telemach</b> – good plans, popular among students<br/><br/>
-              Tip: Compare student offers + data plans before choosing.
+            <div class="field" style="margin-top:0;">
+              <label>Your Reminders</label>
+              <textarea id="planner" placeholder="Example: Rent due every 5th..."></textarea>
             </div>
-            <div class="chipRow">
-              <a class="mapBtn" target="_blank" rel="noopener"
-                 href="https://www.google.com/maps/search/A1+store+near+Maribor">A1 Store</a>
-              <a class="mapBtn" target="_blank" rel="noopener
-                 " href="https://www.google.com/maps/search/Telekom+store+near+Maribor">Telekom</a>
-              <a class="mapBtn" target="_blank" rel="noopener"
-                 href="https://www.google.com/maps/search/Telemach+store+near+Maribor">Telemach</a>
-            </div>
-          </div>
-        </details>
-
-        <!-- Tips -->
-        <details class="panel">
-          <summary class="panelSummary">
-            <div>
-              <div class="panelTitle">❄️ Tips (Winter • Safety • Rules)</div>
-              <div class="panelHint">Student survival guide</div>
-            </div>
-            <span class="tag">✅</span>
-          </summary>
-          <div class="panelBody">
-            <div class="helpBox" style="margin-top:0;">
-              <b>Winter Clothing:</b><br/>
-              • Buy a good jacket (windproof + waterproof)<br/>
-              • Gloves + thermal socks are a must<br/>
-              • Keep one umbrella always<br/><br/>
-
-              <b>Safety:</b><br/>
-              • Keep passport copies (phone + cloud)<br/>
-              • Use bank card, avoid carrying full cash<br/><br/>
-
-              <b>Local rules:</b><br/>
-              • Validate tickets if required<br/>
-              • Respect quiet hours in apartments<br/>
-              • Follow recycling rules (trash separation)
+            <div class="actions" style="margin-top:10px;">
+              <button class="btn primary" onclick="savePlanner()">💾 Save</button>
+              <button class="btn" onclick="clearPlanner()">🧹 Clear</button>
             </div>
           </div>
         </details>
 
       </aside>
-
     </div>
 
     <footer>
-      Built for students in Slovenia 🇸🇮 | Created by <b>Justin Johnson</b>
+      Offline Installable Student Helper App 🇸🇮 | Created by <b>Justin Johnson</b>
     </footer>
+  </div>
+
+  <!-- Install App Banner -->
+  <div class="installBar" id="installBar">
+    <div class="installInner">
+      <div class="installText">
+        <b>📲 Install this as an App</b>
+        <span>Works offline. Add to home screen in 1 tap.</span>
+      </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="btn primary" id="installBtn">Install</button>
+        <button class="btn" onclick="hideInstallBar()">Not now</button>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -843,6 +854,10 @@
       $("d1Bar").style.width = `${d1P}%`;
       $("d2Bar").style.width = `${d2P}%`;
       $("d3Bar").style.width = `${d3P}%`;
+
+      stepIds.forEach(id=>{
+        localStorage.setItem("jj_"+id, $(id).checked ? "1" : "0");
+      });
     }
 
     function bindChecks(){
@@ -850,11 +865,7 @@
         const el = $(id);
         const saved = localStorage.getItem("jj_"+id);
         if(saved !== null) el.checked = (saved === "1");
-
-        el.addEventListener("change", ()=>{
-          localStorage.setItem("jj_"+id, el.checked ? "1" : "0");
-          updateProgress();
-        });
+        el.addEventListener("change", updateProgress);
       });
     }
 
@@ -909,9 +920,17 @@
       setBtn($("btnBUS"), bus ? maps(start, bus, mode) : searchNearby("bus card office", start));
       setBtn($("btnTrain"), searchNearby("train station", start));
 
-      // Nearby hospital & pharmacy buttons use starting address
       setBtn($("btnHosp"), searchNearby("hospital", start));
       setBtn($("btnPharm"), searchNearby("pharmacy", start));
+
+      setBtn($("btnFood5"), searchNearby("cheap food under 5 euro", start));
+      setBtn($("btnFood7"), searchNearby("cheap food under 7 euro", start));
+      setBtn($("btnBakeries"), searchNearby("bakery", start));
+      setBtn($("btnCanteen"), searchNearby("student canteen", start));
+
+      setBtn($("btnWifi"), searchNearby("free wifi", start));
+      setBtn($("btnLibrary"), searchNearby("library", start));
+      setBtn($("btnCafe"), searchNearby("cafe with wifi", start));
 
       localStorage.setItem("jj_start", start);
       localStorage.setItem("jj_mode", mode);
@@ -948,12 +967,13 @@
         $(id).checked = false;
       });
 
-      ["jj_start","jj_mode","jj_ue","jj_uni","jj_furs","jj_zzzs","jj_work","jj_bus"].forEach(k=>{
+      ["jj_start","jj_mode","jj_ue","jj_uni","jj_furs","jj_zzzs","jj_work","jj_bus","jj_planner"].forEach(k=>{
         localStorage.removeItem(k);
       });
 
       fillMaribor();
       updateProgress();
+      $("planner").value = "";
       alert("✅ Reset done!");
     }
 
@@ -971,6 +991,53 @@
       setTheme(current === "dark" ? "light" : "dark");
     }
 
+    function savePlanner(){
+      localStorage.setItem("jj_planner", $("planner").value);
+      alert("✅ Planner saved!");
+    }
+    function clearPlanner(){
+      if(!confirm("Clear planner notes?")) return;
+      $("planner").value = "";
+      localStorage.removeItem("jj_planner");
+    }
+
+    // ✅ PWA Service Worker Register
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./service-worker.js");
+      });
+    }
+
+    // ✅ PWA Install Button
+    let deferredPrompt = null;
+
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+
+      // show install buttons
+      $("installBtnTop").style.display = "inline-block";
+      $("installBar").style.display = "block";
+    });
+
+    function hideInstallBar(){
+      $("installBar").style.display = "none";
+    }
+
+    async function installApp(){
+      if(!deferredPrompt) return;
+
+      deferredPrompt.prompt();
+      const choice = await deferredPrompt.userChoice;
+      deferredPrompt = null;
+
+      $("installBtnTop").style.display = "none";
+      $("installBar").style.display = "none";
+    }
+
+    $("installBtnTop").addEventListener("click", installApp);
+    $("installBtn").addEventListener("click", installApp);
+
     // Init
     bindChecks();
     const savedTheme = localStorage.getItem("jj_theme") || "dark";
@@ -985,6 +1052,7 @@
     $("zzzs").value = url.get("zzzs") || localStorage.getItem("jj_zzzs") || "ZZZS Maribor, Ulica Talcev 9, 2000 Maribor";
     $("work").value = url.get("work") || localStorage.getItem("jj_work") || "Študentski servis Maribor, Gosposvetska cesta 83, 2000 Maribor";
     $("bus").value = url.get("bus") || localStorage.getItem("jj_bus") || "";
+    $("planner").value = localStorage.getItem("jj_planner") || "";
 
     apply();
     updateProgress();
